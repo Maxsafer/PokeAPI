@@ -3,4 +3,4 @@ Fully working proof of concept of a self-sustained Pokémon API. Created in orde
 This API is fully implemented in AWS Lambdas and Go, emails sent can sometimes be founds under spam.
 
 ## Documentation
-Please refer to ```api/openapi.yaml```
+Please refer to ```openapi.yml```
