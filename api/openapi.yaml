@@ -1,0 +1,165 @@
+openapi: 3.0.0
+info:
+  title: PokeAPI AWS-Go
+  version: 1.0.0
+  description: "OpenAPI 3.0 specification for PokeAPI."
+servers:
+  - url: https://rau0upolcj.execute-api.us-east-2.amazonaws.com/prod/api/v1
+    description: Production server
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+  schemas:
+    RegisterRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        username:
+          type: string
+      required:
+        - email
+        - password
+        - username
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+    RefreshApiKeyRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+    ChangePasswordRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        new_password:
+          type: string
+      required:
+        - email
+        - password
+        - new_password
+    SinglePokemonRequest:
+      type: object
+      properties:
+        single_pokemon:
+          type: string
+      required:
+        - single_pokemon
+    PokeFightRequest:
+      type: object
+      properties:
+        single_opponent:
+          type: string
+        pokemon_party:
+          type: array
+          items:
+            type: string
+      required:
+        - single_opponent
+        - pokemon_party
+paths:
+  /register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '200':
+          description: User registered successfully
+  /login:
+    post:
+      summary: User login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful, returns auth token
+  /refresh_api_key:
+    post:
+      summary: Refresh API key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshApiKeyRequest'
+      responses:
+        '200':
+          description: API key refreshed
+  /changepassword:
+    post:
+      summary: Change user password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+      responses:
+        '200':
+          description: Password changed successfully
+  /single_pokemon:
+    post:
+      summary: Get information for a single Pokémon
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SinglePokemonRequest'
+      responses:
+        '200':
+          description: Pokémon data retrieved
+  /poke_fight:
+    post:
+      summary: Recommend fight strategy
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PokeFightRequest'
+      responses:
+        '200':
+          description: Fight recommendation returned
+  /token_report:
+    get:
+      summary: Get token usage report
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Token report data
